@@ -1,0 +1,72 @@
+{
+  "assignment": {
+    "key": "id",
+    "columns": {
+      "id": "text",
+      "customer_id": "text",
+      "arm": "int",
+      "stratum": "text",
+      "probability": "number",
+      "assigned_at": "time"
+    },
+    "description": "用户独立随机分组一次，arm 为返券资格，不是实际领券；probability 是处理组概率。",
+    "references": {}
+  },
+  "baseline": {
+    "key": "id",
+    "columns": {
+      "id": "text",
+      "customer_id": "text",
+      "prior_orders": "int",
+      "region": "text",
+      "available_at": "time"
+    },
+    "description": "分组前可用特征，不含活动后行为。",
+    "references": {
+      "customer_id": "assignment.customer_id"
+    }
+  },
+  "response": {
+    "key": "id",
+    "columns": {
+      "id": "text",
+      "customer_id": "text",
+      "stock": "int",
+      "merchant_response": "number",
+      "occurred_at": "time"
+    },
+    "description": "活动开始后的供给与商家响应，早于曝光窗口，不属于随机分组前协变量。",
+    "references": {
+      "customer_id": "assignment.customer_id"
+    }
+  },
+  "mediators": {
+    "key": "id",
+    "columns": {
+      "id": "text",
+      "customer_id": "text",
+      "impressions": "int?",
+      "window_start": "time",
+      "window_end": "time"
+    },
+    "description": "曝光窗口计数；空值是整段统计丢失，不是零曝光。",
+    "references": {
+      "customer_id": "assignment.customer_id"
+    }
+  },
+  "outcomes": {
+    "key": "id",
+    "columns": {
+      "id": "text",
+      "customer_id": "text",
+      "purchased": "bool",
+      "coupon_claimed": "bool",
+      "window_start": "time",
+      "window_end": "time"
+    },
+    "description": "曝光后成交与是否实际领券。随机资格不强迫领券，也不强迫成交。",
+    "references": {
+      "customer_id": "assignment.customer_id"
+    }
+  }
+}
