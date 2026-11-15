@@ -4,7 +4,9 @@
 
 ## 目录
 
-`reachpath/catalog.py` 解析并校验资料，`domain.py` 提供当前经营视图，`profile.py` 提供探索性数值摘要，`cases.py` 保存含资料副本的研究备注，`service.py` 处理 HTTP。`data/` 是可重复使用的虚构经营资料，`tests/` 检查当前接口和领域口径，`smoke.py` 发起真实本地 HTTP 请求后退出。
+`reachpath/catalog.py` 解析并校验资料，`domain.py` 提供当前经营视图，`profile.py` 提供探索性数值摘要，`paths.py` 实施随机分组下的路径（中介）分析，`cases.py` 保存含资料副本的研究备注，`service.py` 处理 HTTP。`data/` 是可重复使用的虚构经营资料，`tests/` 检查当前接口和领域口径，`smoke.py` 发起真实本地 HTTP 请求后退出。
+
+路径分析把随机化的 ITT 总效应与经过曝光的干预型中介分解分开：处理后混杂（库存、商家响应）在 g-公式中显式建模而非简单回归控制，自然效应与领券因果效应如实标注为不可识别，缺失曝光不补零、共同支持越界单独披露。方法口径见 `docs/domain.md`，接口参数见 `docs/api.md`。
 
 ## 本机运行
 

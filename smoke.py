@@ -23,6 +23,23 @@ def main():
                 restored = json.load(response)
             assert created == restored
             print("研究记录已回读", restored["id"], restored["source_fingerprint"])
+            with urlopen(base + "/paths?boot_reps=8&mc_draws=2&no_sensitivity=1", timeout=30) as response:
+                path_result = json.load(response)
+            report = path_result["report"]
+            assert report["sample"]["n"] == 1000
+            assert "interventional_mediation" in report
+            assert report["positivity"]["zero_imputation_used"] is False
+            print("路径分析 ITT =", report["randomization_estimands"]["itt_purchase"]["estimate"])
+            path_request = Request(
+                base + "/paths?boot_reps=8&mc_draws=2&no_sensitivity=1",
+                data=json.dumps({"label": "冒烟路径记录"}, ensure_ascii=False).encode(),
+                headers={"Content-Type": "application/json"}, method="POST")
+            with urlopen(path_request, timeout=30) as response:
+                path_record = json.load(response)
+            with urlopen(base + "/paths/records/" + path_record["id"], timeout=5) as response:
+                path_restored = json.load(response)
+            assert path_restored["report"] == report
+            print("路径分析记录已回读", path_record["id"])
         finally:
             server.shutdown()
             server.server_close()
